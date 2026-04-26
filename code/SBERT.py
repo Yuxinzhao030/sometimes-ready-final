@@ -124,8 +124,11 @@ def run_sbert_xgboost(X_train, y_train, X_test, y_test):
 # SAVE RESULTS
 # ======================
 def save_results(results):
-    json_path = os.path.join(RESULTS_DIR, "sbert_results.json")
-    csv_path = os.path.join(RESULTS_DIR, "sbert_summary.csv")
+    import json
+    import pandas as pd
+
+    json_path = "../results/sbert_results.json"
+    csv_path = "../results/sbert_summary.csv"
 
     with open(json_path, "w") as f:
         json.dump(results, f, indent=4)
@@ -139,10 +142,12 @@ def save_results(results):
 # ======================
 # PLOTS
 # ======================
-def plot_confusion_matrix(y_true, y_pred, name):
-    cm = confusion_matrix(y_true, y_pred)
+def plot_confusion_matrix(y_true, y_pred, model_name):
+    import matplotlib.pyplot as plt
+    from sklearn.metrics import confusion_matrix
 
-    safe = name.lower().replace(" ", "_")
+    cm = confusion_matrix(y_true, y_pred)
+    safe = model_name.lower().replace(" ", "_")
 
     plt.figure(figsize=(6, 5))
     plt.imshow(cm)
@@ -152,18 +157,21 @@ def plot_confusion_matrix(y_true, y_pred, name):
         for j in range(2):
             plt.text(j, i, cm[i, j], ha="center", va="center")
 
-    plt.title(name)
+    plt.title(model_name)
     plt.xlabel("Predicted")
     plt.ylabel("Actual")
 
-    path = os.path.join(RESULTS_DIR, f"{safe}_confusion.png")
-    plt.savefig(path)
+    path = f"../results/{safe}_confusion.png"
+    plt.savefig(path, dpi=150)
     plt.close()
 
     print(f"[SAVED] {path}")
 
 
 def plot_roc(y_true, outputs):
+    import matplotlib.pyplot as plt
+    from sklearn.metrics import roc_curve, roc_auc_score
+
     plt.figure()
 
     for m in outputs:
@@ -175,8 +183,8 @@ def plot_roc(y_true, outputs):
     plt.legend()
     plt.title("SBERT ROC")
 
-    path = os.path.join(RESULTS_DIR, "roc_curve.png")
-    plt.savefig(path)
+    path = "../results/sbert_roc_curve.png"
+    plt.savefig(path, dpi=150)
     plt.close()
 
     print(f"[SAVED] {path}")
