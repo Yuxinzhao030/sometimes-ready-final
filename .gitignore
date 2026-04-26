@@ -1,0 +1,5 @@
+data/raw/train.csv
+data/raw/test.csv
+models/
+__pycache__/
+*.pyc

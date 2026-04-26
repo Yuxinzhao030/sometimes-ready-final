@@ -1,0 +1,2 @@
+model,accuracy,precision,recall,f1,tn,fp,fn,tp
+Fine-tuned DistilBERT,0.9997363216875412,0.9994040524433849,1.0,0.9997019374068554,4229,2,0,3354
