@@ -19,15 +19,6 @@ from XGBoost import get_xgboost_predictions
 
 
 # ======================
-# PATH SETTINGS
-# ======================
-MODEL_PATH = "../models/all-MiniLM-L6-v2"
-RESULTS_DIR = "../results/SBERT"
-
-os.makedirs(RESULTS_DIR, exist_ok=True)
-
-
-# ======================
 # LOAD DATA
 # ======================
 def load_data():
@@ -67,10 +58,10 @@ def evaluate(y_true, y_pred, y_prob):
 
 
 # ======================
-# SBERT ENCODING (LOCAL MODEL)
+# SBERT ENCODING 
 # ======================
 def encode_sbert(texts):
-    model = SentenceTransformer(MODEL_PATH)
+    model = SentenceTransformer("all-MiniLM-L6-v2")
 
     embeddings = model.encode(
         list(texts),
