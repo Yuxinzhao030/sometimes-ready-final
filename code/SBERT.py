@@ -1,7 +1,5 @@
-import os
-import json
+
 import pandas as pd
-import matplotlib.pyplot as plt
 
 from sentence_transformers import SentenceTransformer
 from sklearn.linear_model import LogisticRegression
@@ -11,8 +9,6 @@ from sklearn.metrics import (
     recall_score,
     f1_score,
     roc_auc_score,
-    confusion_matrix,
-    roc_curve,
 )
 
 from XGBoost import get_xgboost_predictions
