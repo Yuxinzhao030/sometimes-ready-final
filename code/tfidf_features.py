@@ -17,6 +17,9 @@ def build_tfidf(
     X_train_text = train_df["text"].fillna("")
     X_test_text = test_df["text"].fillna("")
 
+    y_train = train_df["label"]
+    y_test = test_df["label"]
+
     print("Train size:", len(X_train_text))
     print("Test size:", len(X_test_text))
 
@@ -35,7 +38,7 @@ def build_tfidf(
     print("Train shape:", X_train_tfidf.shape)
     print("Test shape:", X_test_tfidf.shape)
 
-    return return X_train_tfidf, y_train, X_test_tfidf, y_test
+    return X_train_tfidf, y_train, X_test_tfidf, y_test
 
 
 if __name__ == "__main__":
