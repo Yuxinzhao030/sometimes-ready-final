@@ -35,7 +35,7 @@ def build_tfidf(
     print("Train shape:", X_train_tfidf.shape)
     print("Test shape:", X_test_tfidf.shape)
 
-    return X_train_tfidf, X_test_tfidf
+    return return X_train_tfidf, y_train, X_test_tfidf, y_test
 
 
 if __name__ == "__main__":
