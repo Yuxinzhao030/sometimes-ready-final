@@ -40,3 +40,54 @@ By comparing supervised classification, transformer-based methods, and anomaly d
 
 We evaluate all approaches using standard classification metrics including **Accuracy**, **Precision**, **Recall**, **F1-score**, and **ROC-AUC**, and discuss their strengths, weaknesses, and practical implications for real-world misinformation detection systems.
 
+## Dataset
+
+For this project, we use the **WELFake Dataset**, a publicly available dataset for fake news classification.
+
+### Source
+
+- Dataset: WELFake Dataset
+- Platform: Kaggle
+- Link: https://www.kaggle.com/datasets/saurabhshahane/fake-news-classification
+- Creator: Saurabh Shahane
+
+The WELFake dataset was created by combining several existing fake news and real news datasets into a single large corpus for binary text classification. The goal of the dataset is to support research on automated fake news detection using machine learning and natural language processing techniques.
+
+### Features
+
+The original dataset contains the following columns:
+
+| Column | Description |
+|---|---|
+| `title` | Headline of the news article |
+| `text` | Main body text of the article |
+| `label` | Binary label for classification (`0 = Real`, `1 = Fake`) |
+
+For our modeling pipeline, we primarily use the **article text (`text`)** as the predictive feature and the **label** as the target variable.
+
+### Data Size
+
+The raw dataset contains approximately **72,000+ news articles**, making it sufficiently large for supervised learning models.
+
+After preprocessing, our final dataset size is reduced due to:
+
+- removal of missing values
+- removal of duplicated articles
+- removal of URLs and formatting artifacts
+- filtering out extremely short articles
+- text normalization and cleaning
+
+This ensures higher data quality and reduces noise in downstream modeling.
+
+### Data Collection Background and Limitations
+
+Because WELFake is an aggregated dataset compiled from multiple news datasets, it contains writing styles, topics, and publication sources from a variety of outlets. This diversity is helpful for building generalized fake news detection models.
+
+However, this also introduces several challenges:
+
+- **Source bias**: certain publishers may have consistent writing patterns that models can overfit to
+- **Labeling bias**: article labels depend on the original source datasets and may contain inconsistencies
+- **Temporal drift**: writing styles and misinformation strategies evolve over time
+- **Dataset artifacts**: formatting tokens, media references, and duplicated content may leak signals unrelated to factual accuracy
+
+These limitations should be considered when interpreting model performance.
