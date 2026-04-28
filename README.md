@@ -86,9 +86,7 @@ indicating weaker class separation compared to Logistic Regression and XGBoost.
 
 Overall, this highlights that:
 
-> **model assumptions must align with representation structure**
-
-and that not all classifiers are suitable for dense semantic embeddings.
+> **model assumptions must align with representation structure** and that not all classifiers are suitable for dense semantic embeddings.
 ---
 
 ### TBD
