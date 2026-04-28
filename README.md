@@ -52,8 +52,8 @@ Key settings:
 
 - SBERT + XGBoost  
   ![XGBoost CM](results/sbert_xgboost_confusion.png)
-
-  - SBERT + GaussianNB  
+  
+- SBERT + GaussianNB  
   ![NB CM](results/sbert_nb_confusion.png)
 
 ---
