@@ -320,12 +320,21 @@ Confusion Matrix:
 
 ---
 
+### Visualization
+
+**Confusion Matrices**
+
+![BERT Confusion Matrix](results/figures/bert_confusion_matrix.png)
+
+---
+
 ### Analysis
 Fine-tuned DistilBERT achieves the strongest performance among all tested models, reaching nearly 99% accuracy.
 
 This suggests that end-to-end transformer fine-tuning substantially outperforms feature-based pipelines such as TF-IDF and SBERT on this dataset.
 
 The result indicates that contextual language understanding and task-specific adaptation are highly effective for fake news detection.
+
 ---
 ## Anomaly Detection Analysis
 
