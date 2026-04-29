@@ -226,14 +226,15 @@ def save_results(y, anom_if, anom_svm, agree, ap_if, ap_svm, save_dir="results/c
     print("[SAVED] anomaly_detection_results.csv")
 
 
-# 6. Main Entry Point
 
-if __name__ == "__main__":
+# 6. Run Full Anomaly Detection Pipeline
+
+def run_anomaly_detection():
+    """Run full anomaly detection pipeline: TF-IDF -> IF + SVM -> analysis -> plots."""
     X_train_vec, y_train, X_test_vec, y_test = build_tfidf()
     y = y_test.values if hasattr(y_test, "values") else np.array(y_test)
     print(f"Train: {X_train_vec.shape}, Test: {X_test_vec.shape}, Fake ratio: {y.mean():.2%}")
 
-    # Both methods trained on REAL news only
     anom_if, scores_if, _ = isolation_forest_detection(X_train_vec, y_train, X_test_vec)
     anom_svm, scores_svm, _ = one_class_svm_detection(X_train_vec, y_train, X_test_vec)
 
@@ -242,3 +243,9 @@ if __name__ == "__main__":
     save_results(y, anom_if, anom_svm, agree, ap_if, ap_svm)
 
     print("\nDone!")
+
+
+# 7. Main 
+
+if __name__ == "__main__":
+    run_anomaly_detection()
