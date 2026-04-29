@@ -124,9 +124,9 @@ Key settings:
 
 | Model              | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
 |------------------|---------|----------|--------|---------|--------|
-| SBERT + Logistic | 0.860   | 0.832    | 0.851  | 0.841   | 0.932 |
+| SBERT + Logistic | 0.860   | 0.858    | 0.815  | 0.836   | 0.933 |
 | SBERT + XGBoost  | 0.862   | 0.865    | 0.811  | 0.837   | 0.935 |
-| SBERT + GaussianNB | 0.763 | 0.673    | 0.723  | 0.697   | — |
+| SBERT + GaussianNB | 0.727 | 0.673    | 0.723  | 0.698   | 0.803 |
 
 ---
 
@@ -153,7 +153,7 @@ Key settings:
 
 SBERT-based models achieve strong performance, with Logistic Regression and XGBoost reaching accuracy around 86% and ROC-AUC above 0.93.
 
-In contrast, Gaussian Naive Bayes performs substantially worse, with accuracy dropping to around 76%.
+In contrast, Gaussian Naive Bayes performs substantially worse, with accuracy dropping to around 73%.
 
 This gap can be explained by the underlying assumptions of the model:
 
