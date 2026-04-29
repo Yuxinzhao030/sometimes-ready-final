@@ -147,15 +147,15 @@ Per-class Performance:
 
 - ROC Curve
 
-![XGBoost ROC](results/xgboost_roc_curve.png)
+![XGBoost ROC](results/figures/xgboost_roc_curve.png)
 
 - Confusion Matrix
 
-![XGBoost CM](results/xgboost_confusion_matrix.png)
+![XGBoost CM](results/figures/xgboost_confusion_matrix.png)
 
 - Feature Importance (Top 30)
 
-![XGBoost FI](results/xgboost_feature_importance.png)
+![XGBoost FI](results/figures/xgboost_feature_importance.png)
 
 ---
 
@@ -166,66 +166,6 @@ XGBoost achieves an accuracy of 92.1% and a ROC-AUC of 0.9766, indicating strong
 The model performs consistently across both classes, with balanced precision and recall (0.93 for real, 0.91 for fake). This slight gap suggests the model is marginally more conservative in labeling articles as fake — a desirable property that reduces false accusations.
 
 Compared to Logistic Regression (accuracy 0.933), XGBoost performs slightly lower in accuracy but provides a complementary non-linear perspective. The two models may capture different patterns in the feature space, which is useful for downstream ensemble methods explored by Person 3.
-
----
-
-## Anomaly Detection Analysis
-
-### Method
-
-Beyond supervised classification, we investigate whether fake news articles exhibit anomalous linguistic patterns that unsupervised methods can detect without labels.
-
-Both models are trained **only on real news** (27,573 samples, label=0), so they learn what "normal" journalism looks like. At test time, articles that deviate from these learned patterns are flagged as anomalies. Two complementary approaches are used:
-
-- **Isolation Forest (IF):** Builds 200 random trees that isolate observations through recursive splits. Points that require fewer splits to isolate receive lower anomaly scores, as they are structurally distinct from the majority.
-
-- **One-Class SVM (OC-SVM):** Learns a decision boundary around the training distribution in a reduced feature space. To handle the high dimensionality of TF-IDF vectors (50,000 features), we first apply Truncated SVD to project into 100 dimensions before fitting the RBF kernel.
-
-Both methods use a contamination rate of 10%.
-
----
-
-### Results
-
-| Method | Anomalies Detected | Fake Ratio in Anomalies | Enrichment | Mann-Whitney p |
-|--------|-------------------|------------------------|------------|----------------|
-| Isolation Forest | 1,099 (9.0%) | 32.21% | 0.74x | 3.09e-38 *** |
-| One-Class SVM | 642 (5.3%) | 6.70% | 0.15x | 0.00e+00 *** |
-| Overall baseline | — | 43.59% | 1.00x | — |
-
-Method agreement: 87.29% — the two methods largely agree on which samples are normal vs anomalous, with 94 samples flagged by both. Among these, only 4.26% are fake.
-
-**Visualization**
-
-- Score Distributions
-
-![IF Scores](results/anomaly_if_score_distribution.png)
-![SVM Scores](results/anomaly_svm_score_distribution.png)
-
-- Fake Ratio Comparison
-
-![Fake Ratio](results/anomaly_fake_ratio_comparison.png)
-
-- Method Agreement
-
-![Agreement](results/anomaly_agreement_pie.png)
-
-- PR Curves
-
-![IF PR](results/anomaly_if_pr_curve.png)
-![SVM PR](results/anomaly_svm_pr_curve.png)
-
----
-
-### Analysis
-
-Both anomaly detection methods produce statistically significant results (Mann-Whitney p < 0.001), confirming that anomaly scores carry meaningful information about article authenticity.
-
-The key finding is that anomalies are disproportionately **real news, not fake**. When trained only on real news patterns, the One-Class SVM is particularly striking: only 6.70% of its flagged anomalies are fake (enrichment 0.15x), meaning the most "unusual" articles are overwhelmingly genuine. The 94 articles flagged by both methods contain just 4.26% fake news — nearly ten times lower than the overall baseline of 43.59%.
-
-This reveals an important insight about the nature of misinformation: **fake news follows more predictable, formulaic language patterns**, while genuine journalism — with its diverse topics, writing styles, and source-specific conventions — produces more structural outliers in the TF-IDF feature space. In other words, fake news occupies a surprisingly narrow and homogeneous region, whereas real news is far more varied.
-
-From a practical standpoint, these results complement the supervised XGBoost classifier by offering an alternative lens: rather than asking "is this article fake?", anomaly detection shows that the textual diversity of real journalism is itself a distinguishing characteristic — one that could be leveraged in future detection systems.
 
 ---
 
@@ -260,8 +200,6 @@ Key settings:
 
 | Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
 |---|---:|---:|---:|---:|---:|
-| **TF-IDF + Logistic** | **0.933** | **0.926** | **0.920** | **0.923** | **0.981** |
-| **TF-IDF + MultinomialNB** | **0.864** | **0.831** | **0.863** | **0.847** | **0.938** |
 | **SBERT + Logistic** | **0.860** | **0.858** | **0.815** | **0.836** | **0.933** |
 | **SBERT + XGBoost** | **0.862** | **0.865** | **0.811** | **0.837** | **0.935** |
 | **SBERT + GaussianNB** | **0.727** | **0.673** | **0.723** | **0.698** | **0.803** |
@@ -272,18 +210,18 @@ Key settings:
 
 **ROC Curve**
 
-![ROC](results/sbert_roc_curve.png)
+![ROC](results/figures/sbert_roc_curve.png)
 
 **Confusion Matrices**
 
 - SBERT + Logistic  
-  ![Logistic CM](results/sbert_logistic_confusion.png)
+  ![Logistic CM](results/figures/sbert_logistic_confusion.png)
 
 - SBERT + XGBoost  
-  ![XGBoost CM](results/sbert_xgboost_confusion.png)
+  ![XGBoost CM](results/figures/sbert_xgboost_confusion.png)
   
 - SBERT + GaussianNB  
-  ![NB CM](results/sbert_nb_confusion.png)
+  ![NB CM](results/figures/sbert_nb_confusion.png)
 
 ---
 
@@ -386,6 +324,65 @@ Fine-tuned DistilBERT achieves the strongest performance among all tested models
 This suggests that end-to-end transformer fine-tuning substantially outperforms feature-based pipelines such as TF-IDF and SBERT on this dataset.
 
 The result indicates that contextual language understanding and task-specific adaptation are highly effective for fake news detection.
+---
+## Anomaly Detection Analysis
+
+### Method
+
+Beyond supervised classification, we investigate whether fake news articles exhibit anomalous linguistic patterns that unsupervised methods can detect without labels.
+
+Both models are trained **only on real news** (27,573 samples, label=0), so they learn what "normal" journalism looks like. At test time, articles that deviate from these learned patterns are flagged as anomalies. Two complementary approaches are used:
+
+- **Isolation Forest (IF):** Builds 200 random trees that isolate observations through recursive splits. Points that require fewer splits to isolate receive lower anomaly scores, as they are structurally distinct from the majority.
+
+- **One-Class SVM (OC-SVM):** Learns a decision boundary around the training distribution in a reduced feature space. To handle the high dimensionality of TF-IDF vectors (50,000 features), we first apply Truncated SVD to project into 100 dimensions before fitting the RBF kernel.
+
+Both methods use a contamination rate of 10%.
+
+---
+
+### Results
+
+| Method | Anomalies Detected | Fake Ratio in Anomalies | Enrichment | Mann-Whitney p |
+|--------|-------------------|------------------------|------------|----------------|
+| Isolation Forest | 1,099 (9.0%) | 32.21% | 0.74x | 3.09e-38 *** |
+| One-Class SVM | 642 (5.3%) | 6.70% | 0.15x | 0.00e+00 *** |
+| Overall baseline | — | 43.59% | 1.00x | — |
+
+Method agreement: 87.29% — the two methods largely agree on which samples are normal vs anomalous, with 94 samples flagged by both. Among these, only 4.26% are fake.
+
+**Visualization**
+
+- Score Distributions
+
+![IF Scores](results/figures/anomaly_if_score_distribution.png)
+![SVM Scores](results/figures/anomaly_svm_score_distribution.png)
+
+- Fake Ratio Comparison
+
+![Fake Ratio](results/figures/anomaly_fake_ratio_comparison.png)
+
+- Method Agreement
+
+![Agreement](results/figures/anomaly_agreement_pie.png)
+
+- PR Curves
+
+![IF PR](results/figures/anomaly_if_pr_curve.png)
+![SVM PR](results/figures/anomaly_svm_pr_curve.png)
+
+---
+
+### Analysis
+
+Both anomaly detection methods produce statistically significant results (Mann-Whitney p < 0.001), confirming that anomaly scores carry meaningful information about article authenticity.
+
+The key finding is that anomalies are disproportionately **real news, not fake**. When trained only on real news patterns, the One-Class SVM is particularly striking: only 6.70% of its flagged anomalies are fake (enrichment 0.15x), meaning the most "unusual" articles are overwhelmingly genuine. The 94 articles flagged by both methods contain just 4.26% fake news — nearly ten times lower than the overall baseline of 43.59%.
+
+This reveals an important insight about the nature of misinformation: **fake news follows more predictable, formulaic language patterns**, while genuine journalism — with its diverse topics, writing styles, and source-specific conventions — produces more structural outliers in the TF-IDF feature space. In other words, fake news occupies a surprisingly narrow and homogeneous region, whereas real news is far more varied.
+
+From a practical standpoint, these results complement the supervised XGBoost classifier by offering an alternative lens: rather than asking "is this article fake?", anomaly detection shows that the textual diversity of real journalism is itself a distinguishing characteristic — one that could be leveraged in future detection systems.
+
 ---
 
 ## Appendix
