@@ -180,7 +180,9 @@ We evaluate the following classifiers on top of SBERT embeddings:
 
 - Logistic Regression  
 - XGBoost  
-- Gaussian Naive Bayes  
+- Gaussian Naive Bayes
+
+Gaussian Naive Bayes is included as a simple probabilistic baseline. It assumes that features are independent and follow a Gaussian distribution. While these assumptions do not hold well for SBERT embeddings (which are high-dimensional and correlated), it provides a useful reference point to understand how model assumptions affect performance. We do not use the Multinomial Naive Bayes implementation from because it is specifically designed for count-based or frequency-based features such as TF-IDF. MultinomialNB assumes that all input features are non-negative (e.g., word counts or term frequencies). However, SBERT embeddings are dense, continuous vectors that can contain both positive and negative values.
 
 ---
 
