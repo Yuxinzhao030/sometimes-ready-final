@@ -1,0 +1,3 @@
+method,trained_on,n_anomalies,fake_in_anomalies,enrichment,average_precision
+Isolation Forest,real_only,1099,0.3221,0.74,0.3885
+One-Class SVM,real_only,642,0.067,0.15,0.2986
