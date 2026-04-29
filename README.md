@@ -176,6 +176,57 @@ A comparison with TF-IDF-based models .
 
 ---
 
+## Fine-tuned BERT Models
+
+### Method
+
+We fine-tune a transformer-based language model for fake news classification.
+
+Unlike TF-IDF and SBERT pipelines that rely on fixed feature representations, fine-tuned BERT updates model parameters directly on the classification task, allowing the model to learn task-specific semantic patterns from the news text.
+
+This approach captures contextual meaning, long-range dependencies, and subtle linguistic cues useful for distinguishing fake and real news.
+
+---
+
+### Implementation
+
+We use the pre-trained model:
+
+`distilbert-base-uncased`
+
+Key settings:
+
+- Epochs: 2
+- Learning rate: 2e-5
+- Max length: 256
+- Batch size: 8
+- Optimizer: AdamW (default HuggingFace Trainer)
+
+---
+
+### Results
+
+| Model | Accuracy | Precision | Recall | F1 Score |
+|------|----------|-----------|--------|----------|
+| Fine-tuned DistilBERT | 0.989 | 0.992 | 0.984 | 0.988 |
+
+Confusion Matrix:
+
+- True Negative: 6850
+- False Positive: 43
+- False Negative: 86
+- True Positive: 5241
+
+---
+
+### Analysis
+Fine-tuned DistilBERT achieves the strongest performance among all tested models, reaching nearly 99% accuracy.
+
+This suggests that end-to-end transformer fine-tuning substantially outperforms feature-based pipelines such as TF-IDF and SBERT on this dataset.
+
+The result indicates that contextual language understanding and task-specific adaptation are highly effective for fake news detection.
+---
+
 ## Appendix
 
 ### How to Reproduce the Results
