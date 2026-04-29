@@ -70,10 +70,10 @@ These limitations should be considered when interpreting model performance.
 
 This project adopts a modular pipeline where each team member contributes an independent component:
 
-1. Raw Data → Preprocessing & TF-IDF (Person 1)
-2. TF-IDF → XGBoost (Person 2) + Logistic Regression (Person 1)
-3. SBERT Embeddings + Ensemble Comparison (Person 3)
-4. Fine-tuned BERT + Final Evaluation (Person 4)
+1. Raw Data → Preprocessing & TF-IDF (Chieh SU)
+2. TF-IDF → XGBoost (Person 2) + Logistic Regression (Chenzi JIN)
+3. SBERT Embeddings + Ensemble Comparison (Mingqian GAO)
+4. Fine-tuned BERT + Final Evaluation (Yuxin ZHAO)
 
 All models consume the same 80/20 train-test split (48,880 / 12,220 samples) produced by Person 1's preprocessing script, ensuring a fair and consistent comparison across methods.
 
