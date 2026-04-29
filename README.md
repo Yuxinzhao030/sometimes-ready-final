@@ -67,7 +67,7 @@ These limitations should be considered when interpreting model performance.
 
 ## TF-IDF-based Models
 
-### Methodology
+### Method
 
 We use **TF-IDF vectorization** to convert cleaned news articles into numerical feature representations suitable for machine learning classification.
 
@@ -110,11 +110,13 @@ Key settings:
 
 ### Results
 
-| Model              | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
-|------------------|---------|----------|--------|---------|--------|
-| SBERT + Logistic | 0.860   | 0.858    | 0.815  | 0.836   | 0.933 |
-| SBERT + XGBoost  | 0.862   | 0.865    | 0.811  | 0.837   | 0.935 |
-| SBERT + GaussianNB | 0.727 | 0.673    | 0.723  | 0.698   | 0.803 |
+| Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
+|---|---:|---:|---:|---:|---:|
+| **TF-IDF + Logistic** | **0.933** | **0.926** | **0.920** | **0.923** | **0.981** |
+| **TF-IDF + MultinomialNB** | **0.864** | **0.831** | **0.863** | **0.847** | **0.938** |
+| **SBERT + Logistic** | **0.860** | **0.858** | **0.815** | **0.836** | **0.933** |
+| **SBERT + XGBoost** | **0.862** | **0.865** | **0.811** | **0.837** | **0.935** |
+| **SBERT + GaussianNB** | **0.727** | **0.673** | **0.723** | **0.698** | **0.803** |
 
 ---
 
