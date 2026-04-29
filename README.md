@@ -103,9 +103,9 @@ Our analysis evaluates the following classifiers on top of TF-IDF features:
 
 Each model is assessed using **Accuracy**, **Precision**, **Recall**, **F1-score**, and **ROC-AUC**.
 
-## XGBoost
+### XGBoost
 
-### Implementation
+#### Implementation
 
 We use gradient-boosted decision trees (XGBoost) on TF-IDF vectors as a strong non-linear baseline.
 
@@ -126,7 +126,7 @@ The `hist` tree method was selected for memory efficiency, as it uses histogram-
 
 ---
 
-### Results
+#### Results
 
 | Metric | Score |
 |--------|-------|
@@ -166,7 +166,7 @@ Per-class Performance:
 
 ---
 
-### Analysis
+#### Analysis
 
 XGBoost achieves an accuracy of 91.6% and a ROC-AUC of 0.9733, indicating strong discriminative ability on TF-IDF features.
 
