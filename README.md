@@ -325,9 +325,22 @@ Overall, this highlights that:
 > **model assumptions must align with representation structure** and that not all classifiers are suitable for dense semantic embeddings.
 ---
 
-### TBD
+### Comparison with TF-IDF-based models 
 
-A comparison with TF-IDF-based models .
+TF-IDF–based models outperform SBERT–based models across all metrics.  
+The best TF-IDF model reaches **0.933 accuracy / 0.981 ROC-AUC**, while SBERT models achieve around **0.86 accuracy / 0.93 ROC-AUC**.
+
+This suggests that fake news detection in this dataset relies more on **surface-level lexical patterns** (e.g., specific keywords and writing style), which TF-IDF captures effectively.
+
+In contrast, SBERT focuses on **semantic similarity**, which may smooth out these discriminative word-level signals, making classification harder.
+
+Across both representations, Logistic Regression and XGBoost perform similarly, indicating that  
+> **feature representation matters more than model choice**
+
+Gaussian Naive Bayes performs worst under SBERT due to its strong independence and distributional assumptions, which do not hold for dense embeddings.
+
+**Conclusion:**  
+TF-IDF is more suitable than SBERT for this dataset, as the task is driven more by lexical cues than deep semantic understanding.
 
 ---
 
