@@ -19,15 +19,15 @@ from sklearn.metrics import (
 )
 
 
-TRAIN_PATH = "data/raw/train.csv"
-TEST_PATH = "data/raw/test.csv"
+TRAIN_PATH = "data/processed/train.csv"
+TEST_PATH = "data/processed/test.csv"
 
 RESULTS_DIR = "results/csv"
 FIGURES_DIR = "results/figures"
 MODEL_DIR = "models/bert_fake_news"
 
 MODEL_NAME = "distilbert-base-uncased"
-TEXT_COL = "full_text"
+TEXT_COL = "text"
 LABEL_COL = "label"
 
 
