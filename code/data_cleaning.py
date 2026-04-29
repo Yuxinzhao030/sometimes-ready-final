@@ -15,11 +15,9 @@ def clean_data(
     if "Unnamed: 0" in df.columns:
         df = df.drop(columns=["Unnamed: 0"])
 
-    df["title"] = df["title"].fillna("").astype(str)
     df["text"] = df["text"].fillna("").astype(str)
     df["label"] = df["label"].astype(int)
 
-    df["title"] = df["title"].str.replace(r"\s+", " ", regex=True).str.strip()
     df["text"] = df["text"].str.replace(r"\s+", " ", regex=True).str.strip()
 
     df["text"] = df["text"].str.replace(
