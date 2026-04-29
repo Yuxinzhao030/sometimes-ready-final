@@ -68,15 +68,22 @@ These limitations should be considered when interpreting model performance.
 
 ## Experiment Design
 
-This project adopts a modular pipeline where each team member contributes an independent component:
+We adopt a controlled comparison framework:
 
-1. Raw Data → Preprocessing & TF-IDF (Chieh SU)
-2. TF-IDF → XGBoost (Person 2) + Logistic Regression (Chenzi JIN)
-3. SBERT Embeddings + Ensemble Comparison (Mingqian GAO)
-4. Fine-tuned BERT + Final Evaluation (Yuxin ZHAO)
+- Same dataset and preprocessing
+- Same 80/20 train-test split
+- Same evaluation metrics
 
-All models consume the same 80/20 train-test split (48,880 / 12,220 samples) produced by Person 1's preprocessing script, ensuring a fair and consistent comparison across methods.
+We compare three types of feature representations:
 
+1. TF-IDF (lexical features)
+2. SBERT (semantic embeddings)
+3. Fine-tuned BERT (end-to-end learning)
+
+For TF-IDF and SBERT, we evaluate multiple classifiers:
+- Logistic Regression
+- XGBoost
+- Naive Bayes
 ---
 
 
@@ -256,24 +263,7 @@ indicating weaker class separation compared to Logistic Regression and XGBoost.
 Overall, this highlights that:
 
 > **model assumptions must align with representation structure** and that not all classifiers are suitable for dense semantic embeddings.
----
 
-### Comparison with TF-IDF-based models 
-
-TF-IDF–based models outperform SBERT–based models across all metrics.  
-The best TF-IDF model reaches **0.933 accuracy / 0.981 ROC-AUC**, while SBERT models achieve around **0.86 accuracy / 0.93 ROC-AUC**.
-
-This suggests that fake news detection in this dataset relies more on **surface-level lexical patterns** (e.g., specific keywords and writing style), which TF-IDF captures effectively.
-
-In contrast, SBERT focuses on **semantic similarity**, which may smooth out these discriminative word-level signals, making classification harder.
-
-Across both representations, Logistic Regression and XGBoost perform similarly, indicating that  
-> **feature representation matters more than model choice**
-
-Gaussian Naive Bayes performs worst under SBERT due to its strong independence and distributional assumptions, which do not hold for dense embeddings.
-
-**Conclusion:**  
-TF-IDF is more suitable than SBERT for this dataset, as the task is driven more by lexical cues than deep semantic understanding.
 
 ---
 
@@ -336,6 +326,28 @@ This suggests that end-to-end transformer fine-tuning substantially outperforms 
 The result indicates that contextual language understanding and task-specific adaptation are highly effective for fake news detection.
 
 ---
+## Results and Comparison
+
+| Method                  | Accuracy | Precision | Recall | ROC-AUC |
+|-------------------------|----------|-----------|--------|---------|
+| TF-IDF + Logistic       | 0.933    |           |        | 0.981   |
+| TF-IDF + XGBoost        | 0.921    |           |        | 0.977   |
+| TF-IDF + Naive Bayes    |          |           |        |         |
+| **SBERT + Logistic**    | 0.860    | 0.858     | 0.815  | 0.933   |
+| **SBERT + XGBoost**     | 0.862    | 0.865     | 0.811  | 0.935   |
+| **SBERT + Gaussian NB** | 0.727    | 0.673     | 0.723  | 0.803   |
+| **Fine-tuned BERT**     | 0.989    | 0.992     | 0.984  |         |
+
+We observe three key patterns:
+
+1. Performance differences across representations are substantial  
+2. Within the same representation, classifiers perform relatively similarly  
+3. TF-IDF outperforms SBERT, suggesting lexical features are highly informative in this task  
+
+Overall, representation choice plays a central role in model performance.
+
+
+------
 ## Anomaly Detection Analysis
 
 ### Method
