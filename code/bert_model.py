@@ -16,7 +16,7 @@ from sklearn.metrics import accuracy_score, precision_recall_fscore_support, con
 # Relative paths from the project root
 TRAIN_PATH = "data/raw/train.csv"
 TEST_PATH = "data/raw/test.csv"
-RESULTS_DIR = "results"
+RESULTS_DIR = "results/csv"
 MODEL_DIR = "models/bert_fake_news"
 
 MODEL_NAME = "distilbert-base-uncased"
@@ -127,7 +127,7 @@ def run_bert_pipeline():
         per_device_eval_batch_size=8,
         num_train_epochs=2,
         weight_decay=0.01,
-        logging_dir="results/bert_logs",
+        logging_dir="results/models/bert_logs",
         logging_steps=100,
         load_best_model_at_end=True,
         metric_for_best_model="f1",
@@ -173,13 +173,13 @@ def run_bert_pipeline():
     }
 
     results_df = pd.DataFrame([results])
-    results_df.to_csv("results/bert_results.csv", index=False)
+    results_df.to_csv(os.path.join(RESULTS_DIR, "bert_results.csv"), index=False)
 
     pred_df = pd.DataFrame({
         "y_true": y_true,
         "y_pred": y_pred,
     })
-    pred_df.to_csv("results/bert_predictions.csv", index=False)
+    pred_df.to_csv(os.path.join(RESULTS_DIR, "bert_predictions.csv"), index=False)
 
     print("BERT results:")
     print(results_df)
