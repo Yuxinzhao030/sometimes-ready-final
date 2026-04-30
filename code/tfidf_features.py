@@ -11,6 +11,7 @@ def build_tfidf(
     max_df=0.9,
     stop_words="english",
 ):
+    """Build TF-IDF features from processed train/test CSV files and return feature matrices and labels."""
     train_df = pd.read_csv(train_path)
     test_df = pd.read_csv(test_path)
 
