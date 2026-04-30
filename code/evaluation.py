@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from pathlib import Path
 import matplotlib.pyplot as plt
 import seaborn as sns
@@ -250,6 +251,35 @@ def plot_roc_curve(y_true, model_outputs, title, save_name):
     plt.close()
 
     print(f"[SAVED] {path}")
+
+
+def print_top_tfidf_features(model, vectorizer, top_n=20):
+    """Print top TF-IDF features associated with real and fake news."""
+    feature_names = np.array(vectorizer.get_feature_names_out())
+    coefficients = model.coef_[0]
+
+    top_fake_idx = np.argsort(coefficients)[-top_n:][::-1]
+    top_real_idx = np.argsort(coefficients)[:top_n]
+
+    print("\n" + "=" * 60)
+    print("Top TF-IDF Features for Fake News")
+    print("=" * 60)
+
+    for feature, coef in zip(
+        feature_names[top_fake_idx],
+        coefficients[top_fake_idx],
+    ):
+        print(f"{feature:<30} {coef:.4f}")
+
+    print("\n" + "=" * 60)
+    print("Top TF-IDF Features for Real News")
+    print("=" * 60)
+
+    for feature, coef in zip(
+        feature_names[top_real_idx],
+        coefficients[top_real_idx],
+    ):
+        print(f"{feature:<30} {coef:.4f}")
 
 
 def main():
