@@ -99,23 +99,26 @@ def collect_results(results_dir=RESULTS_DIR):
         try:
             df = pd.read_csv(file)
 
-            # standardize column names
             df.columns = [col.strip().lower() for col in df.columns]
 
-            # allow both f1 and f1_score
             if "f1_score" in df.columns and "f1" not in df.columns:
                 df = df.rename(columns={"f1_score": "f1"})
 
-            # only keep files that look like model evaluation results
             required_metrics = {"accuracy", "precision", "recall", "f1"}
             if not required_metrics.issubset(set(df.columns)):
                 print(f"Skipped {file}: not a classification result file")
                 continue
 
-            # if model column is missing, create one from file name
             if "model" not in df.columns:
-                df["model"] = file.stem.replace("_results", "").replace("_summary", "").replace("_", " ").title()
+                df["model"] = (
+                    file.stem
+                    .replace("_results", "")
+                    .replace("_summary", "")
+                    .replace("_", " ")
+                    .title()
+                )
 
+            df["source_file"] = file.name
             all_results.append(df)
             print(f"Loaded {file}")
 
@@ -133,7 +136,10 @@ def collect_results(results_dir=RESULTS_DIR):
         if col in summary.columns:
             summary[col] = pd.to_numeric(summary[col], errors="coerce")
 
+    summary["model"] = summary["model"].astype(str).str.strip()
+
     summary = summary.sort_values(by="f1", ascending=False)
+    summary = summary.drop_duplicates(subset=["model"], keep="first")
 
     summary.to_csv(SUMMARY_PATH, index=False)
     print(f"\nSaved summary results to {SUMMARY_PATH}")
