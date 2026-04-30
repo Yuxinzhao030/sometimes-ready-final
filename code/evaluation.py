@@ -1,5 +1,8 @@
 import pandas as pd
 from pathlib import Path
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import roc_curve
 
 from sklearn.metrics import (
     accuracy_score,
@@ -16,6 +19,43 @@ RESULTS_DIR = Path("results/csv")
 SUMMARY_PATH = RESULTS_DIR / "summary_results.csv"
 
 
+FIGURES_DIR = Path("results/figures")
+
+
+def save_confusion_matrix(y_true, y_pred, model_name, save_name):
+    """Save a confusion matrix plot for one model."""
+    FIGURES_DIR.mkdir(parents=True, exist_ok=True)
+
+    cm = confusion_matrix(y_true, y_pred)
+
+    plt.figure(figsize=(5, 4))
+
+    sns.heatmap(
+        cm,
+        annot=True,
+        fmt="d",
+        cmap="viridis",
+        cbar=True,
+        annot_kws={"size": 12},
+    )
+
+    plt.title(model_name)
+    plt.xlabel("Predicted")
+    plt.ylabel("Actual")
+
+    save_path = FIGURES_DIR / f"{save_name}_confusion_matrix.png"
+
+    plt.tight_layout()
+    plt.savefig(
+        save_path,
+        dpi=150,
+        bbox_inches="tight",
+    )
+    plt.close()
+
+    print(f"[SAVED] {save_path}")
+
+
 def evaluate_predictions(
     y_test,
     y_pred,
@@ -24,6 +64,7 @@ def evaluate_predictions(
     save_name,
     results_dir=RESULTS_DIR,
 ):
+    """Evaluate model predictions, save metrics to CSV, and save a confusion matrix plot."""
     results_dir = Path(results_dir)
     results_dir.mkdir(parents=True, exist_ok=True)
 
@@ -71,11 +112,18 @@ def evaluate_predictions(
     save_path = results_dir / f"{save_name}_results.csv"
     results.to_csv(save_path, index=False)
 
+    save_confusion_matrix(
+        y_true=y_test,
+        y_pred=y_pred,
+        model_name=model_name,
+        save_name=save_name,
+    )
     print(f"\nSaved results to {save_path}")
     return results
 
 
 def collect_results(results_dir=RESULTS_DIR):
+    """Collect all model result CSV files and create a summary results table."""
     results_dir = Path(results_dir)
 
     if not results_dir.exists():
@@ -118,16 +166,6 @@ def collect_results(results_dir=RESULTS_DIR):
                     .title()
                 )
 
-            df["model"] = df["model"].astype(str).str.strip()
-
-            # Remove duplicate standalone XGBoost result.
-            # It uses TF-IDF features, so we keep "TF-IDF + XGBoost" instead.
-            df = df[df["model"].str.lower() != "xgboost"]
-
-            if df.empty:
-                print(f"Skipped {file}: duplicate standalone XGBoost result")
-                continue
-
             df["source_file"] = file.name
             all_results.append(df)
             print(f"Loaded {file}")
@@ -158,6 +196,7 @@ def collect_results(results_dir=RESULTS_DIR):
 
 
 def print_best_model(summary_df):
+    """Print the best model based on F1 score."""
     if summary_df.empty:
         print("No summary results available.")
         return
@@ -179,6 +218,38 @@ def print_best_model(summary_df):
 
     if "roc_auc" in best.index and pd.notna(best["roc_auc"]):
         print(f"ROC-AUC:   {best['roc_auc']:.4f}")
+
+
+def plot_roc_curve(y_true, model_outputs, title, save_name):
+    """Plot and save ROC curves for multiple models using predicted probabilities."""
+    results_fig_dir = Path("results/figures")
+    results_fig_dir.mkdir(parents=True, exist_ok=True)
+
+    plt.figure(figsize=(7, 6))
+
+    for output in model_outputs:
+        fpr, tpr, _ = roc_curve(y_true, output["y_prob"])
+        auc = roc_auc_score(y_true, output["y_prob"])
+
+        plt.plot(
+            fpr,
+            tpr,
+            label=f"{output['model']} (AUC={auc:.3f})",
+        )
+
+    plt.plot([0, 1], [0, 1], "--", label="Random")
+    plt.title(title)
+    plt.xlabel("False Positive Rate")
+    plt.ylabel("True Positive Rate")
+    plt.legend()
+    plt.grid(alpha=0.3)
+
+    path = results_fig_dir / save_name
+    plt.tight_layout()
+    plt.savefig(path, dpi=150)
+    plt.close()
+
+    print(f"[SAVED] {path}")
 
 
 def main():
