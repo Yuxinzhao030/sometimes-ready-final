@@ -405,6 +405,55 @@ From a practical standpoint, these results complement the supervised XGBoost cla
 
 ---
 
+## Evaluation
+
+We compare the performance of all models using standard classification metrics, including **Accuracy, Precision, Recall, F1-score, and ROC-AUC**.
+
+### Model Comparison
+
+| Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
+|------|----------|-----------|--------|----------|---------|
+| Fine-tuned DistilBERT | 0.986 | 0.993 | 0.974 | **0.983** | — |
+| TF-IDF + Logistic Regression | 0.933 | 0.926 | 0.920 | 0.923 | 0.981 |
+| XGBoost | 0.921 | 0.907 | 0.913 | 0.910 | 0.977 |
+| TF-IDF + XGBoost | 0.913 | 0.896 | 0.905 | 0.900 | 0.972 |
+| TF-IDF + Multinomial NB | 0.864 | 0.831 | 0.863 | 0.847 | 0.938 |
+| SBERT + XGBoost | 0.862 | 0.865 | 0.811 | 0.837 | 0.935 |
+| SBERT + Logistic Regression | 0.861 | 0.859 | 0.815 | 0.837 | 0.934 |
+| SBERT + Gaussian NB | 0.727 | 0.673 | 0.723 | 0.698 | 0.807 |
+
+---
+
+### Key Findings
+
+- **Fine-tuned DistilBERT achieves the best performance across all models**, with an F1 score of **0.983** and accuracy close to **98.6%**  
+- **TF-IDF + Logistic Regression** performs strongly as a classical baseline, with an F1 score of **0.923** and high ROC-AUC  
+- **XGBoost models** also perform well, but slightly below TF-IDF + Logistic Regression  
+- **SBERT-based models do not outperform TF-IDF-based models**, suggesting dense embeddings are not necessarily superior for this task  
+- **Gaussian Naive Bayes performs the worst**, likely due to its strong independence and distribution assumptions  
+
+---
+
+### Interpretation
+
+These results suggest that:
+
+- **Fine-tuned transformer models (BERT)** significantly improve performance by capturing contextual and semantic information  
+- **TF-IDF remains a strong and efficient baseline**, especially when combined with Logistic Regression  
+- The weaker performance of SBERT-based models may be due to:
+  - high-dimensional dense representations  
+  - correlation between features  
+  - mismatch with model assumptions  
+
+---
+
+### Conclusion
+
+Overall, model performance depends heavily on both feature representation and model choice.  
+While classical methods remain competitive, **fine-tuned transformer-based models achieve the best results and provide the most reliable performance for fake news classification in this project**  
+
+---
+
 ## Appendix
 
 ### How to Reproduce the Results
