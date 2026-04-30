@@ -3,7 +3,7 @@ Group Member:  Chieh Su, Mingqian Gao, Yuxin Zhao, and Chenzi Jin
 
 Chieh Su: main pipeline, data cleaning, naive bayes, logistic regression, code formatting
 
-Mingqian Gao: 
+Mingqian Gao: Gaussian Naive Bayes, SBERT Embedding, SBERT+classfiers, SBERT Pipeline
 
 Yuxin Zhao: BERT fine-tuning, performance evaluation & visualization, evaluation pipeline, model comparison, evaluation analysis
 
