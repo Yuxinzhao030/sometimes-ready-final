@@ -118,6 +118,16 @@ def collect_results(results_dir=RESULTS_DIR):
                     .title()
                 )
 
+            df["model"] = df["model"].astype(str).str.strip()
+
+            # Remove duplicate standalone XGBoost result.
+            # It uses TF-IDF features, so we keep "TF-IDF + XGBoost" instead.
+            df = df[df["model"].str.lower() != "xgboost"]
+
+            if df.empty:
+                print(f"Skipped {file}: duplicate standalone XGBoost result")
+                continue
+
             df["source_file"] = file.name
             all_results.append(df)
             print(f"Loaded {file}")
