@@ -5,7 +5,7 @@ Chieh Su: main pipeline, data cleaning, naive bayes, logistic regression, code f
 
 Mingqian Gao: 
 
-Yuxin Zhao: 
+Yuxin Zhao: BERT fine-tuning, performance evaluation & visualization, evaluation pipeline, model comparison, evaluation analysis
 
 Chenzi Jin: 
 
