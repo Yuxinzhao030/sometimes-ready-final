@@ -169,8 +169,6 @@ XGBoost also performs very strongly, achieving comparable results while providin
 
 Multinomial Naive Bayes performs noticeably worse than the other two models, although it still provides a reasonable baseline. This suggests that while simple probabilistic assumptions capture some signal, more flexible decision boundaries substantially improve classification performance.
 
-An important finding is that **TF-IDF consistently outperforms SBERT embeddings on this dataset**, indicating that lexical patterns, keyword usage, and phrase frequency carry highly discriminative information for fake news detection.
-
 ---
 
 ## SBERT-based Models
@@ -260,6 +258,8 @@ indicating weaker class separation compared to Logistic Regression and XGBoost.
 Overall, this highlights that:
 
 > **model assumptions must align with representation structure** and that not all classifiers are suitable for dense semantic embeddings.
+
+An important finding is that **TF-IDF consistently outperforms SBERT embeddings on this dataset**, indicating that lexical patterns, keyword usage, and phrase frequency carry highly discriminative information for fake news detection.
 
 
 ---
