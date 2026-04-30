@@ -3,6 +3,7 @@ from sentence_transformers import SentenceTransformer
 
 
 def encode_sbert(texts):
+    """Encode article text into SBERT embedding vectors."""
     device = "cuda" if torch.cuda.is_available() else "cpu"
     print(f"Using device: {device}")
 
