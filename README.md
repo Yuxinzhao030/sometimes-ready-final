@@ -7,7 +7,7 @@ Mingqian Gao: Gaussian Naive Bayes, SBERT Embedding, SBERT+classfiers, SBERT Pip
 
 Yuxin Zhao: BERT fine-tuning, performance evaluation & visualization, evaluation pipeline, model comparison, evaluation analysis
 
-Chenzi Jin: 
+Chenzi Jin: XGBoost, Anomaly Detection, Isolation Forest, One-CLass SVM
 
 ## Introduction
 
