@@ -10,6 +10,7 @@ def build_tfidf(
     min_df=3,
     max_df=0.9,
     stop_words="english",
+    return_vectorizer=False, 
 ):
     """Build TF-IDF features from processed train/test CSV files and return feature matrices and labels."""
     train_df = pd.read_csv(train_path)
@@ -39,7 +40,10 @@ def build_tfidf(
     print("Train shape:", X_train_tfidf.shape)
     print("Test shape:", X_test_tfidf.shape)
 
-    return X_train_tfidf, y_train, X_test_tfidf, y_test
+    if return_vectorizer:
+        return (X_train_tfidf, y_train, X_test_tfidf, y_test, vectorizer)
+
+    return (X_train_tfidf, y_train, X_test_tfidf, y_test)
 
 
 if __name__ == "__main__":
