@@ -2,6 +2,7 @@ from sklearn.naive_bayes import GaussianNB
 
 
 def get_gaussian_nb_predictions(X_train, y_train, X_test):
+    """Train Gaussian Naive Bayes and return class predictions and fake-news probabilities."""
     model = GaussianNB()
     model.fit(X_train, y_train)
 
