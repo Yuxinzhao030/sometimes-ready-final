@@ -5,7 +5,7 @@ Chieh Su: main pipeline, data cleaning, multinomial naive bayes, logistic regres
 
 Mingqian Gao: Gaussian Naive Bayes, SBERT Embedding, SBERT+classfiers, SBERT Pipeline
 
-Yuxin Zhao: BERT fine-tuning, performance evaluation & visualization, evaluation pipeline, model comparison, evaluation analysis
+Yuxin Zhao: BERT fine-tuning, performance evaluation & visualization (BERT Model) , multi-model evaluation pipeline, evaluation analysis
 
 Chenzi Jin: XGBoost, Anomaly Detection, Isolation Forest, One-CLass SVM
 
@@ -349,9 +349,9 @@ Key settings:
 
 ### Results
 
-| Model | Accuracy | Precision | Recall | F1 Score |
-|------|----------|-----------|--------|----------|
-| Fine-tuned DistilBERT | 0.989 | 0.992 | 0.984 | 0.988 |
+| Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
+|------|----------|-----------|--------|----------|----------|
+| Fine-tuned DistilBERT | 0.989 | 0.992 | 0.984 | 0.988 | 0.998 |
 
 Confusion Matrix:
 
@@ -447,7 +447,7 @@ We compare the performance of all models using standard classification metrics, 
 
 | Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
 |------|----------|-----------|--------|----------|---------|
-| Fine-tuned DistilBERT | 0.986 | 0.993 | 0.974 | **0.983** | — |
+| Fine-tuned DistilBERT | 0.986 | 0.993 | 0.974 | **0.983** | 0.998 |
 | TF-IDF + Logistic Regression | 0.933 | 0.926 | 0.920 | 0.923 | 0.981 |
 | TF-IDF + XGBoost | 0.913 | 0.896 | 0.905 | 0.900 | 0.972 |
 | TF-IDF + Multinomial NB | 0.864 | 0.831 | 0.863 | 0.847 | 0.938 |
