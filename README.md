@@ -394,7 +394,6 @@ We compare the performance of all models using standard classification metrics, 
 |------|----------|-----------|--------|----------|---------|
 | Fine-tuned DistilBERT | 0.986 | 0.993 | 0.974 | **0.983** | — |
 | TF-IDF + Logistic Regression | 0.933 | 0.926 | 0.920 | 0.923 | 0.981 |
-| XGBoost | 0.921 | 0.907 | 0.913 | 0.910 | 0.977 |
 | TF-IDF + XGBoost | 0.913 | 0.896 | 0.905 | 0.900 | 0.972 |
 | TF-IDF + Multinomial NB | 0.864 | 0.831 | 0.863 | 0.847 | 0.938 |
 | SBERT + XGBoost | 0.862 | 0.865 | 0.811 | 0.837 | 0.935 |
