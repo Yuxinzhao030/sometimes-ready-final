@@ -10,6 +10,7 @@ def clean_data(
     test_size=0.2,
     random_state=42,
 ):
+    """Clean the raw WELFake dataset, save train/test CSV files, and return both DataFrames."""
     df = pd.read_csv(data_path)
 
     if "Unnamed: 0" in df.columns:
@@ -97,7 +98,7 @@ def clean_data(
     )
 
     os.makedirs(os.path.dirname(train_path), exist_ok=True)
-
+   
     train_df.to_csv(train_path, index=False)
     test_df.to_csv(test_path, index=False)
 
