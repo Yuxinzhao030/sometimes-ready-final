@@ -91,88 +91,85 @@ For TF-IDF and SBERT, we evaluate multiple classifiers:
 
 ### Method
 
-We use **TF-IDF vectorization** to convert cleaned news articles into numerical feature representations suitable for machine learning classification.
+We use **TF-IDF (Term Frequency–Inverse Document Frequency)** vectorization to convert cleaned news articles into numerical feature representations suitable for machine learning classification.
 
 Compared to dense embedding methods such as SBERT, TF-IDF produces a sparse representation that emphasizes informative words and short phrases while reducing the influence of overly common terms.
 
-Our analysis evaluates the following classifiers on top of TF-IDF features:
+We evaluate the following classifiers on top of TF-IDF features:
 
-- Logistic Regression
-- Multinomial Naive Bayes
-- XGBoost
+- **Logistic Regression**  
+  A strong linear baseline for text classification that performs well on high-dimensional sparse features and provides interpretable results.
+
+- **Multinomial Naive Bayes**  
+  A probabilistic model widely used in text mining that is computationally efficient and particularly well-suited for sparse count-based or TF-IDF representations.
+
+- **XGBoost**  
+  A gradient boosting model capable of capturing nonlinear patterns and feature interactions, providing a stronger ensemble benchmark beyond linear models.
 
 Each model is assessed using **Accuracy**, **Precision**, **Recall**, **F1-score**, and **ROC-AUC**.
 
-### XGBoost
+---
 
-#### Implementation
+### Implementation
 
-We use gradient-boosted decision trees (XGBoost) on TF-IDF vectors as a strong non-linear baseline.
-
-The input features are 50,000-dimensional TF-IDF vectors with unigrams and bigrams, constructed by Person 1's `build_tfidf()` function.
+We use Scikit-learn's TF-IDF vectorizer to transform cleaned article text into numerical feature representations for downstream classification models.
 
 Key settings:
 
-| Parameter | Value |
-|-----------|-------|
-| n_estimators | 200 |
-| max_depth | 6 |
-| learning_rate | 0.1 |
-| subsample | 0.8 |
-| colsample_bytree | 0.8 |
-| tree_method | hist |
+- Maximum features: 50,000  
+- N-gram range: (1, 2)  
+- Stop words removal: English  
+- Representation: sparse TF-IDF matrix
 
-The `hist` tree method was selected for memory efficiency, as it uses histogram-based splitting rather than exact greedy enumeration.
+This representation captures:
 
----
+- informative keywords  
+- short phrase patterns  
+- rare but meaningful terms  
+- reduced influence of overly common words
 
-#### Results
-
-| Metric | Score |
-|--------|-------|
-| Accuracy | 0.9214 |
-| Precision | 0.9070 |
-| Recall | 0.9135 |
-| F1-Score | 0.9102 |
-| ROC-AUC | 0.9766 |
-
-Confusion Matrix:
-
-|  | Predicted Real | Predicted Fake |
-|--|---------------|---------------|
-| **Actual Real** | 6,394 | 499 |
-| **Actual Fake** | 461 | 4,866 |
-
-Per-class Performance:
-
-| Class | Precision | Recall | F1 | Support |
-|-------|-----------|--------|----|---------|
-| Real (0) | 0.93 | 0.93 | 0.93 | 6,893 |
-| Fake (1) | 0.91 | 0.91 | 0.91 | 5,327 |
-
-**Visualization**
-
-- ROC Curve
-
-![XGBoost ROC](results/figures/xgboost_roc_curve.png)
-
-- Confusion Matrix
-
-![XGBoost CM](results/figures/xgboost_confusion_matrix.png)
-
-- Feature Importance (Top 30)
-
-![XGBoost FI](results/figures/xgboost_feature_importance.png)
+The resulting TF-IDF features are then used as inputs for Logistic Regression, Multinomial Naive Bayes, and XGBoost.
 
 ---
 
-#### Analysis
+### Results
 
-XGBoost achieves an accuracy of 92.1% and a ROC-AUC of 0.9766, indicating strong discriminative ability on TF-IDF features.
+| Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
+|---|---:|---:|---:|---:|---:|
+| **TF-IDF + Logistic Regression** | **0.933** | **0.926** | **0.920** | **0.923** | **0.981** |
+| **TF-IDF + MultinomialNB** | **0.864** | **0.831** | **0.863** | **0.847** | **0.938** |
+| **TF-IDF + XGBoost** | **0.921** | **0.907** | **0.914** | **0.910** | **0.977** |
 
-The model performs consistently across both classes, with balanced precision and recall (0.93 for real, 0.91 for fake). This slight gap suggests the model is marginally more conservative in labeling articles as fake — a desirable property that reduces false accusations.
+---
 
-Compared to Logistic Regression (accuracy 0.933), XGBoost performs slightly lower in accuracy but provides a complementary non-linear perspective. The two models may capture different patterns in the feature space, which is useful for downstream ensemble methods explored by Person 3.
+### Visualization
+
+**ROC Curve**
+
+![TF-IDF ROC](results/figures/tfidf_roc_curve.png)
+
+**Confusion Matrices**
+
+- TF-IDF + Logistic Regression  
+  ![Logistic CM](results/figures/tfidf_logistic_confusion_matrix.png)
+
+- TF-IDF + MultinomialNB  
+  ![NB CM](results/figures/tfidf_multinomial_nb_confusion_matrix.png)
+
+- TF-IDF + XGBoost  
+  ![XGBoost CM](results/figures/tfidf_xgboost_confusion_matrix.png)
+
+---
+
+### Analysis
+
+TF-IDF-based models achieve strong predictive performance overall, with **Logistic Regression performing best**, reaching **93.3% accuracy** and **0.981 ROC-AUC**.
+
+XGBoost also performs very strongly, achieving comparable results while providing a nonlinear modeling perspective that can capture more complex feature interactions.
+
+Multinomial Naive Bayes performs noticeably worse than the other two models, although it still provides a reasonable baseline. This suggests that while simple probabilistic assumptions capture some signal, more flexible decision boundaries substantially improve classification performance.
+
+An important finding is that **TF-IDF consistently outperforms SBERT embeddings on this dataset**, indicating that lexical patterns, keyword usage, and phrase frequency carry highly discriminative information for fake news detection.
 
 ---
 
@@ -456,12 +453,6 @@ project/
 │
 ├── README.md
 └── requirements.txt
-```
-
-#### 3. Run the full pipeline
-
-```bash
-python code/main.py
 ```
 
 #### 3. Run the full pipeline
