@@ -459,6 +459,8 @@ Download the **WELFake Dataset** from Kaggle:
 
 https://www.kaggle.com/datasets/saurabhshahane/fake-news-classification
 
+The raw dataset is not included in this repository due to GitHub file size limitations. 
+
 After downloading, place the CSV file in:
 
 ```text
