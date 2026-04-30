@@ -180,6 +180,52 @@ Multinomial Naive Bayes performs noticeably worse than the other two models, alt
 
 ---
 
+### Interpreting Important TF-IDF Features
+
+To better understand why TF-IDF performs so well, we examined the feature coefficients from the Logistic Regression model.
+
+Top features associated with **fake news**:
+
+| Word | Coefficient |
+|---|---:|
+| october | 6.87 |
+| hillary | 6.77 |
+| just | 5.89 |
+| 2016 | 5.71 |
+| november | 5.00 |
+| anti | 4.64 |
+| obama | 4.29 |
+| today | 3.95 |
+| fact | 3.83 |
+| entire | 3.77 |
+
+Top features associated with **real news**:
+
+| Word | Coefficient |
+|---|---:|
+| said | -18.07 |
+| president donald | -11.32 |
+| thursday | -7.15 |
+| tuesday | -7.06 |
+| friday | -6.78 |
+| wednesday | -6.54 |
+| mr | -6.28 |
+| monday | -6.20 |
+| pic | -5.85 |
+| ms | -5.34 |
+
+**Interpretation**
+
+These results suggest that TF-IDF is capturing strong lexical and stylistic differences between fake and real news.
+
+Words associated with **fake news** are often politically charged or attention-grabbing, such as *hillary*, *obama*, and *anti*, reflecting the sensational or opinionated framing common in misinformation content.
+
+In contrast, words associated with **real news** are strongly linked to formal journalistic writing style, including reporting verbs (*said*), titles (*mr*, *ms*), and weekday references (*monday*, *thursday*, *friday*), which are common in professional news reporting.
+
+This helps explain why **TF-IDF performs surprisingly well** in this task: fake and real news are not only different in meaning, but also differ substantially in **word choice, writing style, and reporting structure**, which TF-IDF captures directly.
+
+---
+
 ## SBERT-based Models
 
 ### Method
