@@ -1,11 +1,8 @@
 from sklearn.linear_model import LogisticRegression
 
 
-def get_logistic_regression_predictions(
-    X_train,
-    y_train,
-    X_test,
-):
+def get_logistic_regression_predictions(X_train, y_train, X_test):
+    """Train Logistic Regression and return class predictions and fake-news probabilities."""
     model = LogisticRegression(
         max_iter=1000,
         random_state=42,
