@@ -82,24 +82,43 @@ def collect_results(results_dir=RESULTS_DIR):
         print(f"Results folder does not exist: {results_dir}")
         return pd.DataFrame()
 
-    result_files = list(results_dir.glob("*_results.csv"))
+    all_csv_files = list(results_dir.glob("*.csv"))
 
-    result_files = [
-        file for file in result_files
-        if file.name != "summary_results.csv"
-    ]
-
-    if len(result_files) == 0:
-        print("No result CSV files found.")
-        return pd.DataFrame()
+    skip_files = {
+        "summary_results.csv",
+        "bert_predictions.csv",
+    }
 
     all_results = []
 
-    for file in result_files:
+    for file in all_csv_files:
+        if file.name in skip_files:
+            print(f"Skipped {file}")
+            continue
+
         try:
             df = pd.read_csv(file)
+
+            # standardize column names
+            df.columns = [col.strip().lower() for col in df.columns]
+
+            # allow both f1 and f1_score
+            if "f1_score" in df.columns and "f1" not in df.columns:
+                df = df.rename(columns={"f1_score": "f1"})
+
+            # only keep files that look like model evaluation results
+            required_metrics = {"accuracy", "precision", "recall", "f1"}
+            if not required_metrics.issubset(set(df.columns)):
+                print(f"Skipped {file}: not a classification result file")
+                continue
+
+            # if model column is missing, create one from file name
+            if "model" not in df.columns:
+                df["model"] = file.stem.replace("_results", "").replace("_summary", "").replace("_", " ").title()
+
             all_results.append(df)
             print(f"Loaded {file}")
+
         except Exception as e:
             print(f"Could not read {file}: {e}")
 
@@ -114,8 +133,7 @@ def collect_results(results_dir=RESULTS_DIR):
         if col in summary.columns:
             summary[col] = pd.to_numeric(summary[col], errors="coerce")
 
-    if "f1" in summary.columns:
-        summary = summary.sort_values(by="f1", ascending=False)
+    summary = summary.sort_values(by="f1", ascending=False)
 
     summary.to_csv(SUMMARY_PATH, index=False)
     print(f"\nSaved summary results to {SUMMARY_PATH}")
