@@ -204,9 +204,9 @@ Key settings:
 
 | Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
 |---|---:|---:|---:|---:|---:|
-| **SBERT + Logistic** | **0.860** | **0.858** | **0.815** | **0.836** | **0.933** |
-| **SBERT + XGBoost** | **0.862** | **0.865** | **0.811** | **0.837** | **0.935** |
-| **SBERT + GaussianNB** | **0.727** | **0.673** | **0.723** | **0.698** | **0.803** |
+| SBERT + XGBoost | 0.862 | 0.865 | 0.811 | 0.837 | 0.935 |
+| SBERT + Logistic Regression | 0.861 | 0.859 | 0.815 | 0.837 | 0.934 |
+| SBERT + Gaussian NB | 0.727 | 0.673 | 0.723 | 0.698 | 0.807 |
 
 ---
 
@@ -323,28 +323,7 @@ This suggests that end-to-end transformer fine-tuning substantially outperforms 
 The result indicates that contextual language understanding and task-specific adaptation are highly effective for fake news detection.
 
 ---
-## Results and Comparison
 
-| Method                  | Accuracy | Precision | Recall | ROC-AUC |
-|-------------------------|----------|-----------|--------|---------|
-| TF-IDF + Logistic       | 0.933    |   0.926   | 0.920  | 0.981   |
-| TF-IDF + XGBoost        | 0.921    |    0.907  | 0.914  | 0.977   |
-| TF-IDF + Multinomial NB |  0.864   |  0.831    |  0.863 | 0.938   |
-| **SBERT + Logistic**    | 0.860    | 0.858     | 0.815  | 0.933   |
-| **SBERT + XGBoost**     | 0.862    | 0.865     | 0.811  | 0.935   |
-| **SBERT + Gaussian NB** | 0.727    | 0.673     | 0.723  | 0.803   |
-| **Fine-tuned BERT**     | 0.989    | 0.992     | 0.984  |         |
-
-We observe three key patterns:
-
-1. Performance differences across representations are substantial  
-2. Within the same representation, classifiers perform relatively similarly  
-3. TF-IDF outperforms SBERT, suggesting lexical features are highly informative in this task  
-
-Overall, representation choice plays a central role in model performance.
-
-
-------
 ## Anomaly Detection Analysis
 
 ### Method
