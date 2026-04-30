@@ -228,13 +228,13 @@ Key settings:
 **Confusion Matrices**
 
 - SBERT + Logistic  
-  ![Logistic CM](results/figures/sbert_logistic_confusion.png)
+  ![Logistic CM](results/figures/sbert_logistic_confusion_matrix.png)
 
 - SBERT + XGBoost  
-  ![XGBoost CM](results/figures/sbert_xgboost_confusion.png)
+  ![XGBoost CM](results/figures/sbert_xgboost_confusion_matrix.png)
   
 - SBERT + GaussianNB  
-  ![NB CM](results/figures/sbert_nb_confusion.png)
+  ![NB CM](results/figures/sbert_gaussian_nb_confusion_matrix.png)
 
 ---
 
