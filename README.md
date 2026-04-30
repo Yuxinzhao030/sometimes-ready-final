@@ -137,8 +137,8 @@ The resulting TF-IDF features are then used as inputs for Logistic Regression, M
 | Model | Accuracy | Precision | Recall | F1 Score | ROC-AUC |
 |---|---:|---:|---:|---:|---:|
 | **TF-IDF + Logistic Regression** | **0.933** | **0.926** | **0.920** | **0.923** | **0.981** |
-| **TF-IDF + MultinomialNB** | **0.864** | **0.831** | **0.863** | **0.847** | **0.938** |
 | **TF-IDF + XGBoost** | **0.921** | **0.907** | **0.914** | **0.910** | **0.977** |
+| **TF-IDF + MultinomialNB** | **0.864** | **0.831** | **0.863** | **0.847** | **0.938** |
 
 ---
 
