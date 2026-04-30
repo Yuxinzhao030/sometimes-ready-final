@@ -3,6 +3,8 @@ import pandas as pd
 import numpy as np
 import torch
 import matplotlib.pyplot as plt
+import shutil
+from pathlib import Path
 
 from datasets import Dataset
 from transformers import (
@@ -24,7 +26,6 @@ TEST_PATH = "data/processed/test.csv"
 
 RESULTS_DIR = "results/csv"
 FIGURES_DIR = "results/figures"
-MODEL_DIR = "models/bert_fake_news"
 
 MODEL_NAME = "distilbert-base-uncased"
 TEXT_COL = "text"
@@ -32,6 +33,7 @@ LABEL_COL = "label"
 
 
 def load_train_test_data(train_path=TRAIN_PATH, test_path=TEST_PATH):
+    """Load processed train/test CSV files and validate required columns."""
     train_df = pd.read_csv(train_path)
     test_df = pd.read_csv(test_path)
 
@@ -56,6 +58,7 @@ def load_train_test_data(train_path=TRAIN_PATH, test_path=TEST_PATH):
 
 
 def tokenize_data(train_df, test_df):
+    """Tokenize train and test text data for DistilBERT fine-tuning."""
     tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 
     train_dataset = Dataset.from_pandas(train_df)
@@ -82,6 +85,7 @@ def tokenize_data(train_df, test_df):
 
 
 def compute_metrics(eval_pred):
+    """Compute classification metrics during HuggingFace Trainer evaluation."""
     logits, labels = eval_pred
     preds = np.argmax(logits, axis=1)
 
@@ -102,6 +106,7 @@ def compute_metrics(eval_pred):
 
 
 def save_confusion_matrix(y_true, y_pred):
+    """Save the BERT confusion matrix plot."""
     cm = confusion_matrix(y_true, y_pred)
 
     display = ConfusionMatrixDisplay(
@@ -121,6 +126,7 @@ def save_confusion_matrix(y_true, y_pred):
 
 
 def save_metrics_bar_chart(results):
+    """Save a bar chart of BERT evaluation metrics."""
     metrics = ["accuracy", "precision", "recall", "f1"]
     values = [results[m] for m in metrics]
 
@@ -137,6 +143,7 @@ def save_metrics_bar_chart(results):
 
 
 def save_prediction_distribution(y_true, y_pred):
+    """Save a chart comparing true and predicted BERT labels."""
     pred_df = pd.DataFrame({
         "True Label": y_true,
         "Predicted Label": y_pred,
@@ -161,9 +168,9 @@ def save_prediction_distribution(y_true, y_pred):
 
 
 def run_bert_pipeline():
+    """Run the full DistilBERT fine-tuning, evaluation, and result-saving pipeline."""
     os.makedirs(RESULTS_DIR, exist_ok=True)
     os.makedirs(FIGURES_DIR, exist_ok=True)
-    os.makedirs(MODEL_DIR, exist_ok=True)
 
     print("Loading data...")
     train_df, test_df = load_train_test_data()
@@ -178,7 +185,7 @@ def run_bert_pipeline():
     )
 
     training_args = TrainingArguments(
-        output_dir=MODEL_DIR,
+        output_dir="tmp",
         eval_strategy="epoch",
         save_strategy="no",
         learning_rate=2e-5,
@@ -186,7 +193,7 @@ def run_bert_pipeline():
         per_device_eval_batch_size=16,
         num_train_epochs=1,
         weight_decay=0.01,
-        logging_dir="models/bert_logs",
+        logging_dir="tmp/logs",
         logging_steps=500,
         report_to="none",
     )
@@ -242,6 +249,9 @@ def run_bert_pipeline():
 
     print("BERT results:")
     print(results_df)
+
+    if Path("tmp").exists():
+        shutil.rmtree("tmp")
 
     return results_df
 
