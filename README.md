@@ -1,7 +1,7 @@
 # Fake News Detection Using Machine Learning
 Group Member:  Chieh Su, Mingqian Gao, Yuxin Zhao, and Chenzi Jin
 
-Chieh Su: main pipeline, data cleaning, naive bayes, logistic regression, code formatting
+Chieh Su: main pipeline, data cleaning, multinomial naive bayes, logistic regression, code formatting
 
 Mingqian Gao: Gaussian Naive Bayes, SBERT Embedding, SBERT+classfiers, SBERT Pipeline
 
@@ -92,7 +92,7 @@ We compare three types of feature representations:
 For TF-IDF and SBERT, we evaluate multiple classifiers:
 - Logistic Regression
 - XGBoost
-- Naive Bayes
+- Multinomial Naive Bayes
 ---
 
 
