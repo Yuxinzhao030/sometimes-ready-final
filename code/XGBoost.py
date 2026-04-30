@@ -1,6 +1,7 @@
 import xgboost as xgb
 
 def get_xgboost_predictions(X_train, y_train, X_test):
+    """Train XGBoost and return class predictions and fake-news probabilities."""
     params = {
         "n_estimators": 150,
         "max_depth": 6,
