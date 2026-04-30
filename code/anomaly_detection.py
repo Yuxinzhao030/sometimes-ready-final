@@ -7,16 +7,13 @@ from sklearn.ensemble import IsolationForest
 from sklearn.svm import OneClassSVM
 from sklearn.decomposition import TruncatedSVD
 from sklearn.metrics import precision_recall_curve, f1_score, average_precision_score
-from tfidf_features import build_tfidf
 
 plt.rcParams["figure.dpi"] = 150
 
 
-# 1. Isolation Forest (RCF) - Trained on REAL only
-
 def isolation_forest_detection(X_train_vec, y_train, X_test_vec, contamination=0.1):
-    """Run Isolation Forest on real news only. Returns (anomalies, scores, model)."""
-    print("\n--- Isolation Forest (RCF) - Trained on REAL only ---")
+    """Train Isolation Forest on real news only and return anomaly labels and scores."""
+    print("\n--- Isolation Forest - Trained on REAL only ---")
     y_train = np.array(y_train)
     X_train_real = X_train_vec[y_train == 0]
     print(f"Training on real news only: {X_train_real.shape[0]:,} samples")
@@ -31,10 +28,8 @@ def isolation_forest_detection(X_train_vec, y_train, X_test_vec, contamination=0
     return anomalies, scores, model
 
 
-# 2. One-Class SVM (SVD reduction) - Trained on REAL only
-
 def one_class_svm_detection(X_train_vec, y_train, X_test_vec, contamination=0.1, n_components=100):
-    """Run One-Class SVM on real news only with SVD reduction. Returns (anomalies, scores, model)."""
+    """Train One-Class SVM on real news only after SVD reduction and return anomaly labels and scores."""
     print("\n--- One-Class SVM (SVD 100d) - Trained on REAL only ---")
     y_train = np.array(y_train)
     X_train_real = X_train_vec[y_train == 0]
@@ -55,10 +50,8 @@ def one_class_svm_detection(X_train_vec, y_train, X_test_vec, contamination=0.1,
     return anomalies, scores, model
 
 
-# 3. Analysis
-
 def run_analysis(y, anom_if, scores_if, anom_svm, scores_svm):
-    """Print enrichment, percentile, and statistical significance analysis."""
+    """Analyze anomaly detection results using enrichment, score percentiles, and statistical tests."""
     print("\n" + "=" * 60)
     print("ANALYSIS")
     print("=" * 60)
@@ -91,10 +84,8 @@ def run_analysis(y, anom_if, scores_if, anom_svm, scores_svm):
     return agree, both
 
 
-# 4. Visualization
-
 def plot_all(y, anom_if, scores_if, anom_svm, scores_svm, save_dir="results/figures"):
-    """Save 6 plots: score distributions, agreement pie, fake ratio bars, and PR curves."""
+    """Save anomaly detection score distributions, agreement plots, fake-ratio plots, and PR curves."""
     os.makedirs(save_dir, exist_ok=True)
     baseline = y.mean()
     both = (anom_if & anom_svm).sum()
@@ -197,10 +188,8 @@ def plot_all(y, anom_if, scores_if, anom_svm, scores_svm, save_dir="results/figu
     return ap_if, ap_svm
 
 
-# 5. Save Results
-
 def save_results(y, anom_if, anom_svm, agree, ap_if, ap_svm, save_dir="results/csv"):
-    """Save anomaly detection summary to CSV."""
+    """Save anomaly detection summary results to CSV."""
     os.makedirs(save_dir, exist_ok=True)
     baseline = y.mean()
 
@@ -227,11 +216,8 @@ def save_results(y, anom_if, anom_svm, agree, ap_if, ap_svm, save_dir="results/c
 
 
 
-# 6. Run Full Anomaly Detection Pipeline
-
-def run_anomaly_detection():
-    """Run full anomaly detection pipeline: TF-IDF -> IF + SVM -> analysis -> plots."""
-    X_train_vec, y_train, X_test_vec, y_test = build_tfidf()
+def run_anomaly_detection(X_train_vec, y_train, X_test_vec, y_test):
+    """Run the full TF-IDF anomaly detection pipeline using Isolation Forest and One-Class SVM."""
     y = y_test.values if hasattr(y_test, "values") else np.array(y_test)
     print(f"Train: {X_train_vec.shape}, Test: {X_test_vec.shape}, Fake ratio: {y.mean():.2%}")
 
@@ -243,9 +229,3 @@ def run_anomaly_detection():
     save_results(y, anom_if, anom_svm, agree, ap_if, ap_svm)
 
     print("\nDone!")
-
-
-# 7. Main 
-
-if __name__ == "__main__":
-    run_anomaly_detection()
