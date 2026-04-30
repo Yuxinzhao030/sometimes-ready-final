@@ -327,9 +327,9 @@ The result indicates that contextual language understanding and task-specific ad
 
 | Method                  | Accuracy | Precision | Recall | ROC-AUC |
 |-------------------------|----------|-----------|--------|---------|
-| TF-IDF + Logistic       | 0.933    |           |        | 0.981   |
-| TF-IDF + XGBoost        | 0.921    |           |        | 0.977   |
-| TF-IDF + Naive Bayes    |          |           |        |         |
+| TF-IDF + Logistic       | 0.933    |   0.926   | 0.920  | 0.981   |
+| TF-IDF + XGBoost        | 0.921    |    0.907  | 0.914  | 0.977   |
+| TF-IDF + Multinomial NB |  0.864   |  0.831    |  0.863 | 0.938   |
 | **SBERT + Logistic**    | 0.860    | 0.858     | 0.815  | 0.933   |
 | **SBERT + XGBoost**     | 0.862    | 0.865     | 0.811  | 0.935   |
 | **SBERT + Gaussian NB** | 0.727    | 0.673     | 0.723  | 0.803   |
