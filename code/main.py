@@ -15,6 +15,7 @@ from evaluation import (
     collect_results,
     print_best_model,
     plot_roc_curve,
+    print_top_tfidf_features,
 )
 
 
@@ -29,18 +30,20 @@ print("\n" + "=" * 60)
 print("Step 2: Build TF-IDF Features")
 print("=" * 60)
 
-X_train_tfidf, y_train, X_test_tfidf, y_test = build_tfidf()
-
+X_train_tfidf, y_train, X_test_tfidf, y_test, tfidf_vectorizer = build_tfidf(
+    return_vectorizer=True
+)
 
 print("\n" + "=" * 60)
 print("Step 3: TF-IDF + Logistic Regression")
 print("=" * 60)
 
-y_pred_tfidf_logistic, y_prob_tfidf_logistic = (
+y_pred_tfidf_logistic, y_prob_tfidf_logistic, tfidf_logistic_model = (
     get_logistic_regression_predictions(
         X_train_tfidf,
         y_train,
         X_test_tfidf,
+        return_model=True,
     )
 )
 
@@ -50,6 +53,12 @@ evaluate_predictions(
     y_prob=y_prob_tfidf_logistic,
     model_name="TF-IDF + Logistic Regression",
     save_name="tfidf_logistic",
+)
+
+print_top_tfidf_features(
+    model=tfidf_logistic_model,
+    vectorizer=tfidf_vectorizer,
+    top_n=10,
 )
 
 
