@@ -1,5 +1,8 @@
+data/raw/WELFake_Dataset.csv
 data/raw/train.csv
 data/raw/test.csv
 models/
 __pycache__/
 *.pyc
+tmp/
+.DS_Store
